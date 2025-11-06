@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GREGORY | New Philadelphia City Services</title>
+    <style>
+        :root {
+            --blue-deep: #10374f;
+            --blue-soft: #1f5875;
+            --teal-accent: #2aa7a1;
+            --sand: #f3f1eb;
+            --white: #ffffff;
+            --gray-text: #4f5b67;
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--sand);
+            color: var(--gray-text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        header {
+            background: var(--blue-deep);
+            color: var(--white);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .brand-symbol {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--teal-accent), var(--blue-soft));
+            display: grid;
+            place-items: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .brand-text h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .brand-text span {
+            display: block;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .login-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 999px;
+            padding: 0.6rem 1.4rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--teal-accent);
+            color: var(--white);
+            box-shadow: 0 10px 24px rgba(16, 55, 79, 0.25);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1.5px solid rgba(255, 255, 255, 0.7);
+            color: var(--white);
+        }
+
+        .btn:hover,
+        .btn:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(16, 55, 79, 0.2);
+            outline: none;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 3.5rem;
+        }
+
+        .hero {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 2.5rem;
+            display: grid;
+            gap: 1.75rem;
+            box-shadow: 0 18px 40px rgba(16, 55, 79, 0.08);
+        }
+
+        .hero-lockup {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: fit-content;
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(42, 167, 161, 0.12);
+            color: var(--blue-soft);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            margin: 0;
+            color: var(--blue-deep);
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .hero-title .acronym {
+            font-size: clamp(2.4rem, 6vw, 3.2rem);
+            font-weight: 800;
+            letter-spacing: 0.45rem;
+            text-transform: uppercase;
+            display: inline-flex;
+            gap: 0.5rem;
+            align-items: center;
+            background: linear-gradient(135deg, var(--blue-deep), var(--teal-accent));
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero-title .descriptor {
+            font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: rgba(16, 55, 79, 0.7);
+        }
+
+        .hero-tagline {
+            margin: 0;
+            max-width: 60ch;
+            font-size: 1.05rem;
+        }
+
+        .hero .quick-search {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        .quick-card {
+            background: var(--sand);
+            border-radius: 18px;
+            padding: 1.5rem;
+            border: 1px solid rgba(16, 55, 79, 0.06);
+            box-shadow: 0 12px 22px rgba(16, 55, 79, 0.05);
+        }
+
+        .quick-card h3 {
+            margin: 0 0 0.5rem;
+            color: var(--blue-soft);
+            font-size: 1.1rem;
+        }
+
+        .section-title {
+            margin-top: 3.5rem;
+            color: var(--blue-deep);
+            font-size: 1.6rem;
+        }
+
+        .services-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            margin-top: 1.5rem;
+        }
+
+        .service-card {
+            background: var(--white);
+            border-radius: 18px;
+            padding: 1.75rem;
+            border: 1px solid rgba(16, 55, 79, 0.08);
+            display: grid;
+            gap: 0.75rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .service-card:hover,
+        .service-card:focus-within {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 30px rgba(16, 55, 79, 0.12);
+        }
+
+        .service-card strong {
+            color: var(--blue-soft);
+            font-size: 1.1rem;
+        }
+
+        .service-links {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .service-links a {
+            text-decoration: none;
+            color: var(--teal-accent);
+            font-weight: 600;
+        }
+
+        .service-links a span {
+            display: block;
+            font-weight: 400;
+            color: var(--gray-text);
+            font-size: 0.95rem;
+        }
+
+        .employee-section {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 2.25rem;
+            margin-top: 3.5rem;
+            display: grid;
+            gap: 1.2rem;
+            border: 1.5px dashed rgba(16, 55, 79, 0.2);
+            position: relative;
+        }
+
+        .employee-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .employee-badge {
+            width: fit-content;
+            padding: 0.35rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(16, 55, 79, 0.08);
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: rgba(16, 55, 79, 0.75);
+        }
+
+        .employee-section h3 {
+            margin: 0;
+            font-size: 1.45rem;
+            color: var(--blue-deep);
+        }
+
+        .employee-section p {
+            margin: 0;
+            max-width: 60ch;
+        }
+
+        .employee-signin {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: fit-content;
+            padding: 0.55rem 1.25rem;
+            border-radius: 999px;
+            background: rgba(31, 88, 117, 0.12);
+            color: var(--blue-soft);
+            font-weight: 600;
+            border: 1px solid rgba(31, 88, 117, 0.25);
+        }
+
+        .employee-services {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            position: relative;
+        }
+
+        .employee-services.locked {
+            pointer-events: none;
+        }
+
+        .employee-services.locked .employee-card {
+            filter: blur(1.5px);
+            opacity: 0.35;
+            position: relative;
+            z-index: 0;
+        }
+
+        .employee-services.locked::after {
+            content: "Sign in as a city employee to view these tools";
+            position: absolute;
+            inset: 30% 15%;
+            display: grid;
+            place-items: center;
+            padding: 1.25rem;
+            border-radius: 16px;
+            background: rgba(16, 55, 79, 0.9);
+            color: var(--white);
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 0.04em;
+            z-index: 1;
+        }
+
+        .employee-card {
+            background: var(--sand);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: grid;
+            gap: 0.6rem;
+            border: 1px solid rgba(16, 55, 79, 0.12);
+        }
+
+        .notice {
+            background: rgba(42, 167, 161, 0.12);
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            font-size: 0.95rem;
+            border: 1px solid rgba(42, 167, 161, 0.25);
+            color: var(--blue-soft);
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .support {
+            margin-top: 3.5rem;
+            display: grid;
+            gap: 1.25rem;
+            background: var(--white);
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid rgba(16, 55, 79, 0.08);
+        }
+
+        .support h3 {
+            margin: 0;
+            color: var(--blue-deep);
+        }
+
+        .support-details {
+            display: grid;
+            gap: 1.25rem;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        }
+
+        .support-card {
+            background: var(--sand);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(16, 55, 79, 0.08);
+        }
+
+        footer {
+            margin-top: 4rem;
+            text-align: center;
+            color: rgba(16, 55, 79, 0.7);
+            font-size: 0.9rem;
+            padding-bottom: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 1rem;
+            }
+
+            .hero {
+                padding: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand" aria-label="City Communications Office of New Philadelphia">
+            <div class="brand-symbol" aria-hidden="true">NP</div>
+            <div class="brand-text">
+                <h1>GREGORY</h1>
+                <span>City Communications Office (CComm) · New Philadelphia</span>
+            </div>
+        </div>
+        <div class="login-actions">
+            <button class="btn btn-secondary" type="button">Create Account</button>
+            <button class="btn btn-primary" type="button">Sign In</button>
+        </div>
+    </header>
+    <main>
+        <section class="hero" aria-labelledby="welcome">
+            <div class="hero-lockup">
+                <span class="hero-badge">CComm · City of New Philadelphia</span>
+                <h2 class="hero-title" id="welcome">
+                    <span class="acronym" aria-hidden="true">GREGORY</span>
+                    <span class="visually-hidden">GREGORY · Generalized Registry for the Efficient Generation of Official Requests and Yapplications</span>
+                    <span class="descriptor">New Philadelphia's Civic Service Constellation</span>
+                </h2>
+                <p class="hero-tagline">
+                    Navigate one cohesive system for every permit, service request, and city update—all styled for clarity
+                    by the City Communications Office (CComm).
+                </p>
+            </div>
+            <div class="quick-search" aria-label="Popular online services">
+                <article class="quick-card">
+                    <h3>Start a Request</h3>
+                    <p>Apply for permits, schedule inspections, or submit a city service request in minutes.</p>
+                    <button class="btn btn-primary" type="button">Begin Application</button>
+                </article>
+                <article class="quick-card">
+                    <h3>Check Status</h3>
+                    <p>Stay updated with real-time tracking for permits, service requests, and public hearings.</p>
+                    <button class="btn btn-secondary" type="button">Track My Items</button>
+                </article>
+                <article class="quick-card">
+                    <h3>Need Assistance?</h3>
+                    <p>Connect with CComm support for guidance on forms, timelines, and accessibility options.</p>
+                    <button class="btn btn-secondary" type="button">Contact Support</button>
+                </article>
+            </div>
+        </section>
+
+        <h2 class="section-title" id="public-services">Online Services by Category</h2>
+        <section class="services-grid" aria-labelledby="public-services">
+            <article class="service-card" tabindex="0">
+                <strong>Permits &amp; Licensing</strong>
+                <p>Digitally submit building permits, business licenses, and special event applications.</p>
+                <div class="service-links">
+                    <a href="#">Building &amp; Renovation <span>Plan reviews, inspections, contractor registration</span></a>
+                    <a href="#">Business Licensing <span>Apply, renew, or update city business licenses</span></a>
+                    <a href="#">Events &amp; Filming <span>Reserve public spaces and request filming permits</span></a>
+                </div>
+            </article>
+            <article class="service-card" tabindex="0">
+                <strong>Community &amp; Neighborhoods</strong>
+                <p>Stay connected with neighborhood programs, safety resources, and volunteer opportunities.</p>
+                <div class="service-links">
+                    <a href="#">Public Safety <span>Report non-emergency issues or request wellness checks</span></a>
+                    <a href="#">Housing Support <span>Apply for housing assistance and inspections</span></a>
+                    <a href="#">Community Grants <span>Submit proposals for neighborhood improvement</span></a>
+                </div>
+            </article>
+            <article class="service-card" tabindex="0">
+                <strong>Infrastructure &amp; Mobility</strong>
+                <p>Report infrastructure concerns, request street improvements, and monitor transit notices.</p>
+                <div class="service-links">
+                    <a href="#">Street Maintenance <span>Potholes, snow removal, and roadway safety</span></a>
+                    <a href="#">Transit Services <span>Pass programs, mobility assistance, route updates</span></a>
+                    <a href="#">Environmental Services <span>Recycling schedules, water quality alerts</span></a>
+                </div>
+            </article>
+            <article class="service-card" tabindex="0">
+                <strong>Records &amp; Public Meetings</strong>
+                <p>Access records, register for hearings, and stay informed on city council activity.</p>
+                <div class="service-links">
+                    <a href="#">Public Records <span>Request documents and certified copies online</span></a>
+                    <a href="#">Council &amp; Boards <span>Agenda packets, live streams, comment sign-ups</span></a>
+                    <a href="#">Payments <span>Submit fees, fines, and taxes securely</span></a>
+                </div>
+            </article>
+        </section>
+
+        <section class="employee-section" aria-labelledby="employee-portal">
+            <div class="employee-header">
+                <span class="employee-badge">Restricted · City Staff</span>
+                <h3 id="employee-portal">GREGORY Employee Flight Deck</h3>
+            </div>
+            <p>
+                Internal operations tools are reserved for authorized New Philadelphia employees. Sign in with your
+                city-issued credentials to unlock the employee workspace.
+            </p>
+            <button class="employee-signin" type="button">Employee Sign In</button>
+            <div class="notice" role="status">
+                <strong>Employee Access Required:</strong> Employee-only areas of GREGORY stay hidden until you are
+                authenticated.
+            </div>
+            <div class="employee-services locked" aria-hidden="true">
+                <article class="employee-card">
+                    <h4>Workforce Hub</h4>
+                    <p>Manage schedules, timesheets, and professional development resources.</p>
+                    <button class="btn btn-secondary" type="button">Go to Workforce Hub</button>
+                </article>
+                <article class="employee-card">
+                    <h4>Internal Communications</h4>
+                    <p>View CComm advisories, policy updates, and emergency broadcast tools.</p>
+                    <button class="btn btn-secondary" type="button">Open Communications</button>
+                </article>
+                <article class="employee-card">
+                    <h4>Service Desk</h4>
+                    <p>Submit IT support tickets, facility requests, and procurement approvals.</p>
+                    <button class="btn btn-secondary" type="button">Access Service Desk</button>
+                </article>
+            </div>
+        </section>
+
+        <section class="support" aria-labelledby="support">
+            <h3 id="support">Support from CComm</h3>
+            <p>We are here to help every resident and employee navigate GREGORY with confidence.</p>
+            <div class="support-details">
+                <article class="support-card">
+                    <h4>Contact Center</h4>
+                    <p>Call 311 or (215) 555-0110 · Weekdays 7 a.m. to 7 p.m.</p>
+                    <p>Email: <a href="mailto:support@ccomm.newphila.gov">support@ccomm.newphila.gov</a></p>
+                </article>
+                <article class="support-card">
+                    <h4>Accessibility</h4>
+                    <p>Language assistance, screen reader guidance, and alternative formats available upon request.</p>
+                </article>
+                <article class="support-card">
+                    <h4>Visit Us</h4>
+                    <p>City Communications Office · 400 Civic Avenue, New Philadelphia City Hall.</p>
+                    <p>Walk-in hours: Monday–Friday, 9 a.m. to 4 p.m.</p>
+                </article>
+            </div>
+        </section>
+
+        <footer>
+            © <span id="year"></span> City of New Philadelphia · GREGORY | Powered by the City Communications Office (CComm)
+        </footer>
+    </main>
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
