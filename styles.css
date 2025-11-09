@@ -1,0 +1,519 @@
+:root {
+  color-scheme: light dark;
+  --color-background: #f5f7fa;
+  --color-surface: #ffffff;
+  --color-primary: #004f97;
+  --color-primary-accent: #006dcc;
+  --color-accent: #1a936f;
+  --color-text: #1f2933;
+  --color-muted: #52606d;
+  --color-border: #d9e2ec;
+  --color-danger: #9b1c1c;
+  font-size: 16px;
+  font-family: "Inter", "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: inherit;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 1rem 3vw;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.branding h1 {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+}
+
+.tagline {
+  margin: 0.125rem 0 0;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+.tagline a,
+.app-footer a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 111, 197, 0.4);
+}
+
+.tagline a:hover,
+.app-footer a:hover {
+  color: var(--color-primary);
+  text-decoration-color: var(--color-primary);
+}
+
+.top-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.top-nav button {
+  background: none;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  color: var(--color-text);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.top-nav button.active,
+.top-nav button:hover {
+  background: rgba(0, 111, 197, 0.1);
+  color: var(--color-primary);
+}
+
+.session-info {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+.main-content {
+  flex: 1;
+  padding: 2.5rem 5vw;
+}
+
+.app-footer {
+  padding: 1.5rem 3vw;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+.auth-wrapper {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: stretch;
+}
+
+.login-panel,
+.public-cta {
+  background: var(--color-surface);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.08);
+}
+
+.login-form,
+.upload-form,
+.bill-form,
+.user-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-field {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-border);
+  font: inherit;
+}
+
+.form-field textarea {
+  resize: vertical;
+}
+
+.btn {
+  border-radius: 999px;
+  padding: 0.6rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn.primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn.primary:hover {
+  background: var(--color-primary-accent);
+}
+
+.btn.secondary {
+  background: rgba(26, 147, 111, 0.12);
+  color: var(--color-accent);
+  border: 1px solid rgba(26, 147, 111, 0.3);
+}
+
+.btn.link {
+  background: none;
+  color: var(--color-primary);
+  padding: 0;
+}
+
+.btn.danger {
+  background: rgba(155, 28, 28, 0.1);
+  color: var(--color-danger);
+  border: 1px solid rgba(155, 28, 28, 0.2);
+}
+
+.btn:focus-visible {
+  outline: 3px solid rgba(0, 79, 151, 0.4);
+  outline-offset: 2px;
+}
+
+.workspace-grid,
+.archives-grid,
+.bill-flex,
+.jurisprudence-layout,
+.admin-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.workspace-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.card {
+  background: var(--color-surface);
+  border-radius: 1rem;
+  padding: 1.75rem;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+  display: grid;
+  gap: 1rem;
+}
+
+.card header h2,
+.card header h3 {
+  margin: 0;
+}
+
+.card-body {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.section-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.section-header h2 {
+  margin: 0;
+}
+
+.layout {
+  display: grid;
+  gap: 2rem;
+}
+
+.document-layout {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: minmax(240px, 280px) 1fr;
+}
+
+.document-categories {
+  background: var(--color-surface);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  display: grid;
+  gap: 1.5rem;
+  align-content: start;
+}
+
+.document-categories ul,
+.document-list,
+.bill-listing,
+#caseList,
+.user-list,
+#publicLegislation,
+#publicJurisprudence,
+#publicPolls,
+#archiveList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.document-categories li button {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.75rem;
+  background: none;
+  border: 1px solid var(--color-border);
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.document-categories li button.active,
+.document-categories li button:hover {
+  background: rgba(0, 79, 151, 0.08);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.google-docs ul li a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.google-docs ul li a:hover {
+  text-decoration: underline;
+}
+
+.document-content {
+  display: grid;
+  gap: 2rem;
+}
+
+.upload-panel {
+  background: var(--color-surface);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: inset 0 0 0 1px var(--color-border);
+  display: grid;
+  gap: 1rem;
+}
+
+.upload-result {
+  padding: 0.85rem 1rem;
+  border-radius: 0.75rem;
+  background: rgba(0, 79, 151, 0.08);
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.list-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.document-list li,
+.bill-listing li,
+.user-list li,
+#caseList li,
+#archiveList li,
+#publicLegislation li,
+#publicJurisprudence li,
+#publicPolls li {
+  background: var(--color-surface);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+.document-list li header,
+.bill-listing li header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(0, 79, 151, 0.12);
+  color: var(--color-primary);
+}
+
+.badge.repealed {
+  background: rgba(155, 28, 28, 0.12);
+  color: var(--color-danger);
+}
+
+.bill-flex {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.bill-listing li {
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.bill-listing li:hover,
+.bill-listing li.active {
+  border-color: var(--color-primary);
+}
+
+.bill-detail {
+  background: var(--color-surface);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.progress-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 0.5rem;
+}
+
+.progress-step {
+  padding: 0.45rem 0.6rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  font-size: 0.8rem;
+  background: rgba(209, 213, 219, 0.6);
+  color: #111827;
+}
+
+.progress-step.active {
+  background: rgba(26, 147, 111, 0.2);
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.placeholder {
+  text-align: center;
+  padding: 2rem;
+  color: var(--color-muted);
+}
+
+.archives-results ul li header,
+.jurisprudence-list li header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.public-portal .card {
+  box-shadow: none;
+  border: 1px solid var(--color-border);
+}
+
+.charter-embed iframe {
+  width: 100%;
+  min-height: 480px;
+  border: none;
+  border-radius: 0.75rem;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+}
+
+.polls-list article {
+  background: var(--color-surface);
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  padding: 1.25rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.poll-meta {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+.hint {
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  .document-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .top-nav {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .app-header {
+    position: static;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #0f172a;
+    --color-surface: #16213c;
+    --color-text: #f8fafc;
+    --color-muted: #cbd5f5;
+    --color-border: rgba(148, 163, 184, 0.35);
+  }
+
+  .card,
+  .document-categories,
+  .upload-panel,
+  .bill-detail,
+  .polls-list article {
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.4);
+  }
+
+  .document-list li,
+  .bill-listing li,
+  .user-list li,
+  #caseList li,
+  #archiveList li,
+  #publicLegislation li,
+  #publicJurisprudence li,
+  #publicPolls li {
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.5);
+  }
+
+  .btn.link {
+    color: #9bdaf3;
+  }
+}

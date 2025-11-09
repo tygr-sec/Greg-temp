@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Philadelphia Municipal Data System</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="branding">
+        <h1>New Philadelphia Municipal Data System</h1>
+        <p class="tagline">
+          Centralized document and legislative management for city staff &mdash; a companion to
+          <a href="https://cityofnp.com" target="_blank" rel="noreferrer noopener">cityofnp.com</a>
+        </p>
+      </div>
+      <nav class="top-nav" id="topNav" aria-label="Primary navigation"></nav>
+      <div class="session-info" id="sessionInfo" aria-live="polite"></div>
+    </header>
+
+    <main id="mainContent" class="main-content" tabindex="-1"></main>
+
+    <footer class="app-footer">
+      <p>
+        &copy; <span id="currentYear"></span> City of New Philadelphia &middot;
+        Municipal Data System (MDS) &middot;
+        <a href="https://cityofnp.com" target="_blank" rel="noreferrer noopener">cityofnp.com</a>
+      </p>
+    </footer>
+
+    <template id="loginTemplate">
+      <section class="auth-wrapper">
+        <div class="login-panel">
+          <h2>Employee Access</h2>
+          <p>Sign in with your municipal credentials to access internal tools.</p>
+          <form id="loginForm" class="login-form" novalidate>
+            <label class="form-field">
+              <span>Email</span>
+              <input type="email" id="loginEmail" required autocomplete="username" placeholder="firstname.lastname@newphiladelphia.gov" />
+            </label>
+            <label class="form-field">
+              <span>Password</span>
+              <input type="password" id="loginPassword" required autocomplete="current-password" />
+            </label>
+            <button type="submit" class="btn primary">Sign in</button>
+          </form>
+          <details class="hint">
+            <summary>Need help signing in?</summary>
+            <p>
+              Contact the City Communications Office (CComm) help desk or review the
+              onboarding packet for credential recovery instructions.
+            </p>
+          </details>
+        </div>
+        <div class="public-cta">
+          <h2>Public Records Portal</h2>
+          <p>View the municipal charter, enacted legislation, jurisprudence, and archives.</p>
+          <button class="btn secondary" data-nav="public">Enter public portal</button>
+        </div>
+      </section>
+    </template>
+
+    <template id="dashboardTemplate">
+      <div class="workspace-grid">
+        <section class="card" aria-labelledby="documentsHeading">
+          <header>
+            <h2 id="documentsHeading">Document Management</h2>
+            <p>Upload, track, and retrieve official records.</p>
+          </header>
+          <div class="card-body" id="documentDashboard"></div>
+        </section>
+        <section class="card" aria-labelledby="billTrackerHeading">
+          <header>
+            <h2 id="billTrackerHeading">Bill Tracker</h2>
+            <p>Monitor legislation from submission through passage.</p>
+          </header>
+          <div class="card-body" id="billTrackerSummary"></div>
+          <button class="btn link" data-nav="bills">View detailed tracker</button>
+        </section>
+        <section class="card" aria-labelledby="archivesHeading">
+          <header>
+            <h2 id="archivesHeading">Municipal Archives</h2>
+            <p>Browse preserved media and historical assets.</p>
+          </header>
+          <div class="card-body" id="archivesOverview"></div>
+          <button class="btn link" data-nav="archives">Open archives</button>
+        </section>
+      </div>
+    </template>
+
+    <template id="documentsTemplate">
+      <section class="layout">
+        <header class="section-header">
+          <div>
+            <h2>Document Center</h2>
+            <p>Manage internal records across departments and integrate with AWS storage.</p>
+          </div>
+          <button class="btn secondary" data-nav="dashboard">Return to dashboard</button>
+        </header>
+
+        <div class="document-layout">
+          <aside class="document-categories" aria-label="Document categories">
+            <h3>Collections</h3>
+            <ul id="categoryList"></ul>
+            <div class="google-docs">
+              <h4>Live Google Docs</h4>
+              <p>
+                Frequently updated documents stay in Google Docs while remaining accessible in MDS.
+                Staff can open them in-place without leaving the workflow.
+              </p>
+              <ul id="googleDocList"></ul>
+            </div>
+          </aside>
+
+          <section class="document-content" aria-live="polite">
+            <div class="upload-panel">
+              <h3>Upload to AWS S3</h3>
+              <p>
+                Files are stored securely in the city&rsquo;s AWS S3 bucket with audit logging. Provide the
+                metadata below to generate a managed upload.
+              </p>
+              <form id="uploadForm" class="upload-form">
+                <label class="form-field">
+                  <span>Title</span>
+                  <input type="text" id="uploadTitle" required />
+                </label>
+                <label class="form-field">
+                  <span>Category</span>
+                  <select id="uploadCategory" required></select>
+                </label>
+                <label class="form-field">
+                  <span>File</span>
+                  <input type="file" id="uploadFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" required />
+                </label>
+                <label class="form-field">
+                  <span>Confidentiality</span>
+                  <select id="uploadConfidentiality" required>
+                    <option value="internal">Internal</option>
+                    <option value="restricted">Restricted</option>
+                    <option value="public">Public</option>
+                  </select>
+                </label>
+                <button class="btn primary" type="submit">Generate Upload Link</button>
+              </form>
+              <div id="uploadResult" class="upload-result" aria-live="polite"></div>
+            </div>
+
+            <div class="document-listing">
+              <header class="list-header">
+                <h3 id="selectedCategoryTitle">All Documents</h3>
+                <div class="list-controls">
+                  <label>
+                    <span class="sr-only">Search documents</span>
+                    <input type="search" id="documentSearch" placeholder="Search documents" />
+                  </label>
+                </div>
+              </header>
+              <ul id="documentList" class="document-list"></ul>
+            </div>
+          </section>
+        </div>
+      </section>
+    </template>
+
+    <template id="billsTemplate">
+      <section class="layout">
+        <header class="section-header">
+          <div>
+            <h2>Legislative Bill Tracker</h2>
+            <p>Submit legislation, assign sponsors, and follow progress through each stage.</p>
+          </div>
+          <button class="btn secondary" data-nav="dashboard">Return to dashboard</button>
+        </header>
+
+        <div class="bill-flex">
+          <section class="bill-submission" aria-labelledby="submitBillHeading">
+            <h3 id="submitBillHeading">Submit legislation</h3>
+            <form id="billForm" class="bill-form">
+              <label class="form-field">
+                <span>Bill title</span>
+                <input type="text" id="billTitle" required />
+              </label>
+              <label class="form-field">
+                <span>Sponsor</span>
+                <input type="text" id="billSponsor" required />
+              </label>
+              <label class="form-field">
+                <span>Summary</span>
+                <textarea id="billSummary" required rows="4"></textarea>
+              </label>
+              <label class="form-field">
+                <span>Upload PDF</span>
+                <input type="file" id="billFile" accept="application/pdf" required />
+              </label>
+              <button class="btn primary" type="submit">Submit bill</button>
+            </form>
+          </section>
+
+          <section class="bill-list" aria-labelledby="billListHeading">
+            <div class="list-header">
+              <div>
+                <h3 id="billListHeading">Active legislation</h3>
+                <p class="muted">Click a bill to view details and update its status.</p>
+              </div>
+              <label>
+                <span class="sr-only">Filter by status</span>
+                <select id="billFilter">
+                  <option value="all">All statuses</option>
+                </select>
+              </label>
+            </div>
+            <ul id="billList" class="bill-listing"></ul>
+          </section>
+
+          <section class="bill-detail" aria-live="polite">
+            <div id="billDetailPlaceholder" class="placeholder">
+              <h3>Select a bill</h3>
+              <p>Choose a bill from the list to review its materials and progress.</p>
+            </div>
+            <article id="billDetail" hidden></article>
+          </section>
+        </div>
+      </section>
+    </template>
+
+    <template id="archivesTemplate">
+      <section class="layout">
+        <header class="section-header">
+          <div>
+            <h2>Municipal Archives</h2>
+            <p>Search digitized records, videos, and artifacts preserved for reference.</p>
+          </div>
+          <button class="btn secondary" data-nav="dashboard">Return to dashboard</button>
+        </header>
+
+        <div class="archives-grid">
+          <section aria-labelledby="archiveFiltersHeading">
+            <h3 id="archiveFiltersHeading">Filters</h3>
+            <label class="form-field">
+              <span>Media type</span>
+              <select id="archiveTypeFilter">
+                <option value="all">All</option>
+              </select>
+            </label>
+            <label class="form-field">
+              <span>Search</span>
+              <input type="search" id="archiveSearch" placeholder="Search archives" />
+            </label>
+          </section>
+          <section class="archives-results" aria-live="polite">
+            <h3>Archive entries</h3>
+            <ul id="archiveList"></ul>
+          </section>
+        </div>
+      </section>
+    </template>
+
+    <template id="publicTemplate">
+      <section class="layout public-portal">
+        <header class="section-header">
+          <div>
+            <h2>Public Records Portal</h2>
+            <p>
+              Access city legislation, charter updates, jurisprudence, and voting history as presented on
+              <a href="https://cityofnp.com" target="_blank" rel="noreferrer noopener">cityofnp.com</a>.
+            </p>
+          </div>
+          <button class="btn secondary" data-nav="login">Employee sign-in</button>
+        </header>
+
+        <section class="card">
+          <header>
+            <h3>Municipal Charter</h3>
+            <p>Latest version maintained in Google Docs for continuous collaboration.</p>
+          </header>
+          <div class="card-body charter-embed" id="charterEmbed"></div>
+        </section>
+
+        <section class="card">
+          <header>
+            <h3>Passed Legislation</h3>
+            <p>Browse ordinances and resolutions enacted by City Council.</p>
+          </header>
+          <div class="card-body">
+            <ul id="publicLegislation"></ul>
+          </div>
+        </section>
+
+        <section class="card">
+          <header>
+            <h3>Jurisprudence</h3>
+            <p>Summaries of notable municipal court decisions.</p>
+          </header>
+          <div class="card-body">
+            <ul id="publicJurisprudence" class="jurisprudence-list"></ul>
+          </div>
+        </section>
+
+        <section class="card">
+          <header>
+            <h3>Completed Voting Polls</h3>
+            <p>Results of citywide and council-specific voting initiatives.</p>
+          </header>
+          <div class="card-body">
+            <ul id="publicPolls"></ul>
+          </div>
+        </section>
+      </section>
+    </template>
+
+    <template id="jurisprudenceTemplate">
+      <section class="layout">
+        <header class="section-header">
+          <div>
+            <h2>Jurisprudence Library</h2>
+            <p>Research municipal court cases, presiding judges, and opinions.</p>
+          </div>
+          <button class="btn secondary" data-nav="dashboard">Return to dashboard</button>
+        </header>
+
+        <div class="jurisprudence-layout">
+          <aside>
+            <h3>Case Index</h3>
+            <ul id="caseList"></ul>
+          </aside>
+          <article id="caseDetail" aria-live="polite">
+            <div class="placeholder">
+              <h3>Select a case</h3>
+              <p>Choose a case to view opinion details and presiding judges.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </template>
+
+    <template id="adminTemplate">
+      <section class="layout">
+        <header class="section-header">
+          <div>
+            <h2>City Communications Office &mdash; Admin Portal</h2>
+            <p>Manage user accounts, reset access, and view activity summaries.</p>
+          </div>
+          <button class="btn secondary" data-nav="dashboard">Return to dashboard</button>
+        </header>
+
+        <div class="admin-grid">
+          <section aria-labelledby="userListHeading">
+            <h3 id="userListHeading">User accounts</h3>
+            <ul id="userList" class="user-list"></ul>
+          </section>
+          <section aria-labelledby="userFormHeading">
+            <h3 id="userFormHeading">Create or update user</h3>
+            <form id="userForm" class="user-form">
+              <label class="form-field">
+                <span>Full name</span>
+                <input type="text" id="userName" required />
+              </label>
+              <label class="form-field">
+                <span>Email</span>
+                <input type="email" id="userEmail" required />
+              </label>
+              <label class="form-field">
+                <span>Role</span>
+                <select id="userRole" required>
+                  <option value="staff">Staff</option>
+                  <option value="legislator">Legislator</option>
+                  <option value="ccomm">CComm Admin</option>
+                </select>
+              </label>
+              <label class="form-field">
+                <span>Temporary password</span>
+                <input type="text" id="userPassword" required />
+              </label>
+              <div class="form-actions">
+                <button class="btn primary" type="submit">Save user</button>
+                <button class="btn danger" type="button" id="deleteUser">Remove user</button>
+              </div>
+            </form>
+            <p class="muted">All credentials sync with the city&rsquo;s identity provider every 15 minutes.</p>
+          </section>
+        </div>
+      </section>
+    </template>
+
+    <template id="pollsTemplate">
+      <section class="layout">
+        <header class="section-header">
+          <div>
+            <h2>Voting Polls Archive</h2>
+            <p>Track historical vote outcomes for transparency and reference.</p>
+          </div>
+          <button class="btn secondary" data-nav="dashboard">Return to dashboard</button>
+        </header>
+
+        <div class="polls-list" id="pollsList"></div>
+      </section>
+    </template>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
